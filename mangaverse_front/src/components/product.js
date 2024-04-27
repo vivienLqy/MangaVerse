@@ -1,6 +1,6 @@
 import React from "react";
 
-const product = ({ product }) => {
+const Product = ({ product }) => {
   return (
     <section className="flex flex-col items-center justify-around my-4  text-center">
       <div>
@@ -26,5 +26,5 @@ const product = ({ product }) => {
     </section>
   );
 };
-export default product;
+export default Product;
 

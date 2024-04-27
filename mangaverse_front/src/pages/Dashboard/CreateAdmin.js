@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import NavAdmin from "../components/wrapper/NavAdmin";
+import NavAdmin from "../../components/wrapper/NavAdmin";
 
 const CreateAdmin = () => {
   const [name, setName] = useState("");
@@ -44,7 +44,7 @@ const CreateAdmin = () => {
               <input
                 type="text"
                 name="name"
-                placeholder="Nom du manga"
+                placeholder="Tome du manga"
                 onChange={(e) => setName(e.target.value)}
               />
             </div>

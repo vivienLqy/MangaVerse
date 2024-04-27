@@ -1,32 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../../assets/Logo.svg";
 
 const Footer = () => {
+  const [date, setDate] = useState(new Date())
+
   return (
     <footer>
-      <nav class="bg-nav h-16 w-full ">
-        <div class="flex justify-around h-full items-center text-white">
-          <div class="">
+      <nav className="bg-nav h-16 w-full ">
+        <div className="flex justify-around h-full items-center text-white">
+          <div className="">
             <a href="/">
               <img src={Logo} className="w-16 h-12" alt="logo" />
             </a>
           </div>
-          <div class="w-96">
-            <ul class="hidden lg:flex w-full justify-between text-xs">
+          <div className="w-96">
+            <ul className="hidden lg:flex w-full justify-between text-xs">
               <a href="/src/index.html">
-                <li class="hovertext-lavande">Accueil</li>
+                <li className="hovertext-lavande">Accueil</li>
               </a>
               <a href="#">
-                <li class="hovertext-lavande">Catalogue</li>
+                <li className="hovertext-lavande">Catalogue</li>
               </a>
               <a href="#">
-                <li class="hovertext-lavande">Contact</li>
+                <li className="hovertext-lavande">Contact</li>
               </a>
             </ul>
           </div>
-          <p class="text-gray-500">
-            Copyright ©2024 All rights reserved |{" "}
-            <a href="" class="hovertext-lavande">
+          <p className="text-gray-500">
+            Copyright {date.getFullYear()} All rights reserved |{" "}
+            <a href="" className="hovertext-lavande">
               Condition de confidentialité
             </a>
           </p>

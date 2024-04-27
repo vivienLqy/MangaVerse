@@ -1,6 +1,6 @@
 import React from "react";
-import Update from "../assets/update.svg";
-import Delete from "../assets/delete.svg";
+import Update from "../../assets/update.svg";
+import Delete from "../../assets/delete.svg";
 import { NavLink } from "react-router-dom";
 
 const OeuvresAdmin = ({ oeuvre }) => {
@@ -9,7 +9,7 @@ const OeuvresAdmin = ({ oeuvre }) => {
       <ul className="grid grid-cols-1 text-white">
         <li className="flex justify-between items-center">
           {oeuvre.name}
-          <div className="flex w-12">
+          <div className="flex w-12 gap-3">
             <NavLink to={`/dashboard/update/oeuvre/${oeuvre.id}`}>
               <img src={Update} alt="logoUpdate" />
             </NavLink>

@@ -1,5 +1,6 @@
 import Card from "../components/Card";
-import Carousel from "../components/Carousel";
+import CarouselRecent from "../components/CarouselRecent";
+import CarouselRate from "../components/CarouselRate";
 
 const Accueil = () => {
   return (
@@ -9,7 +10,7 @@ const Accueil = () => {
           Commencer une nouvelle serie
         </h1>
         <div className="flex justify-evenly p-8">
-          <Carousel />
+          <CarouselRecent />
         </div>
         <div className="lg:hidden">
           <Card />
@@ -53,10 +54,10 @@ const Accueil = () => {
         </div>
       </div>
       <div className="bg-bgAccueil flex  flex-col justify-center  items-center p-8">
-        <h1 className=" cielText font-black text-3xl text-center py-8">
-          Commencer une nouvelle serie
+        <h1 className=" cielText font-black text-3xl text-center uppercase text- py-8">
+          Les plus populaire
         </h1>
-        <Carousel />
+        <CarouselRate />
       </div>
     </div>
   );

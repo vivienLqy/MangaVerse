@@ -10,20 +10,17 @@ const NavAdmin = () => {
     };
 
     return (
-        <div className='flex w-1/6 bg-nav'>
-            <div className="flex-grow h-5-100 flex flex-col justify-around">
+        <div className='flex w-1/6 bg-nav justify-center'>
+            <div className="flex flex-col">
                 <div>
-                    <NavLink to="/" className="flex items-center flex-col text-white">
-                        <img className="w-16 h-16 ml-5 " src={Logo} alt="logo" />
-                        <p>MangasVerse</p>
+                    <NavLink to="/">
+                        <img className="m-auto" src={Logo} alt="logo" />
                     </NavLink>
                 </div>
-                <div className=''>
+                <div>
                     <ul>
-                        <li className='bg-lavande p-2'>
-                            <NavLink to="/" className="flex items-center flex-col text-white text-2xl">
-                                <p>Dashboard</p>
-                            </NavLink>
+                        <li className='p-2'>
+                            <p className="text-center text-gray-400 text-2xl">DASHBOARD</p>
                         </li>
                         <li className='bg-lavande p-2'>
                             <div onClick={toggleDropdown} className="flex items-center flex-col text-white cursor-pointer relative">

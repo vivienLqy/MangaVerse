@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { NavLink } from "react-router-dom";
-import Update from "../assets/update.svg";
-import Delete from "../assets/delete.svg";
-import Check from "../assets/check.svg";
-import Cancel from "../assets/cancel.svg";
+import Update from "../../assets/update.svg";
+import Delete from "../../assets/delete.svg";
+import Check from "../../assets/check.svg";
+import Cancel from "../../assets/cancel.svg";
 
 const PanelAdmin = ({ product, onDelete }) => {
     const [confirmDelete, setConfirmDelete] = useState(false);

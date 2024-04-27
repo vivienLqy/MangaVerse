@@ -17,7 +17,15 @@ const FormLog = () => {
   const storeToken = (token) => {
     localStorage.setItem("token", token);
   };
-
+  // const decodeToken = (token) => {
+  //   try {
+  //     const decodedToken = jwt_decode(token);
+  //     return decodedToken;
+  //   }catch (error) {
+  //     setError( "Erreur de decodage du token:", error);
+  //     return null;
+  //   }
+  // }
   const login = async (email, password) => {
     // e.preventDefault();
     try {

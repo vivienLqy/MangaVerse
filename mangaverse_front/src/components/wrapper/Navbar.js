@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import BurgerMenu from "../BurgerMenu";
 import Login from "../../assets/login.svg";
 import Search from "../../assets/search.svg";
@@ -7,88 +7,100 @@ import Shop from "../../assets/shop.svg";
 import Logo from "../../assets/Logo.svg";
 import Logout from "../../assets/logout.svg";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
-
-  const [oeuvres, setOeuvres] = useState('');
-  console.log(localStorage);
-  const logout = () => {
-    localStorage.removeItem('token');
-    window.location.href = "/connexion";
-  }
+  let location = useLocation();
+  const [roles, setRoles] = useState(null);
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/users", {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      .get("http://localhost:8000/api/users")
       .then((res) => {
-        setOeuvres(res.data);
-        // setProduits(res.data["hydra:member"]);
-        console.log(res);
+        const token = localStorage.getItem("token");
+        if (token) {
+          const decodedToken = jwtDecode(token);
+          console.log(decodedToken);
+          const roles = decodedToken.roles;
+          setRoles(roles);
+          console.log(roles);
+        }
       })
       .catch((error) => {
         console.error(
-          "Une erreur s'est produite lors de la récupération des produits : ",
+          "Une erreur s'est produite lors de la récupération de l'utilisateur : ",
           error
         );
       });
   }, []);
 
+  const logout = () => {
+    localStorage.clear();
+    window.location.href = "/connexion";
+  };
+
+  // console.log(roles);
   return (
     <div>
-      <nav className=" bg-nav w-full " id="ancre-up">
-        <div className="flex justify-around h-full items-center text-white">
-          <div className="">
-            <NavLink to="/" className="flex items-center">
-              <img className="w-16 h-16 ml-5 " src={Logo} alt="logo" />
-              <p>MangasVerse</p>
-            </NavLink>
-          </div>
-          <div className="w-96">
-            <ul className="hidden sm:flex w-full justify-between">
-              <NavLink to="/">
-                <li className="bg-lavande p-5">Accueil</li>
+      {!location.pathname.startsWith('/dashboard') && (
+        <nav className=" bg-nav w-full " id="ancre-up">
+          <div className="flex justify-around h-full items-center text-white">
+            <div className="">
+              <NavLink to="/" className="flex items-center">
+                <img className="w-16 h-16 ml-5 " src={Logo} alt="logo" />
+                <p>MangasVerse</p>
               </NavLink>
-              <NavLink to="/catalogue">
-                <li className="bg-lavande p-5">Catalogue</li>
-              </NavLink>
-              <NavLink to="/contact">
-                <li className="bg-lavande p-5">Contact</li>
-              </NavLink>
-            </ul>
-          </div>
-          <div className="hidden sm:flex w-32 justify-between size-6">
-            <NavLink to="/" className="svg-container">
-              <img src={Search} alt="loupe" />
-            </NavLink>
-            <NavLink to="/dashboard" className="svg-container">
-              <img src={Shop} alt="boutique" />
-            </NavLink>
-            {
-              localStorage.getItem('token') ?
-              <>
-                <NavLink onClick={logout} to="#" className="svg-container">
-                  <img src={Login} alt="profil" />
+            </div>
+            <div className="w-96">
+              <ul className="hidden sm:flex w-full justify-between">
+                <NavLink to="/">
+                  <li className="bg-lavande p-5">Accueil</li>
                 </NavLink>
-                <NavLink onClick={logout} to="/connexion" className="svg-container">
-                  <img src={Logout} alt="deconnexion" />
+                <NavLink to="/catalogue">
+                  <li className="bg-lavande p-5">Catalogue</li>
                 </NavLink>
-                </>
-                :
+                <NavLink to="/contact">
+                  <li className="bg-lavande p-5">Contact</li>
+                </NavLink>
+                {roles !== null && roles.includes("ROLE_ADMIN") && (
+                  <NavLink to="/dashboard">
+                    <li className="p-5 text-purple-400 underline hover:text-red-600 ">dashboard</li>
+                  </NavLink>
+                )}
+              </ul>
+            </div>
+            <div className="hidden sm:flex w-36 justify-between size-6">
+              <NavLink to="/" className="svg-container">
+                <img src={Search} alt="loupe" />
+              </NavLink>
+              <NavLink to="/dashboard" className="svg-container">
+                <img src={Shop} alt="boutique" />
+              </NavLink>
+              {localStorage.getItem("token") ? (
+                <div className="flex gap-5">
+                  <NavLink to="/monprofil" className="svg-container">
+                    <img src={Login} alt="mon profil" />
+                  </NavLink>
+                  <NavLink
+                    onClick={logout}
+                    to="/connexion"
+                    className="svg-container"
+                  >
+                    <img src={Logout} alt="deconnexion" />
+                  </NavLink>
+                </div>
+              ) : (
                 <NavLink to="/connexion" className="svg-container">
                   <img src={Login} alt="connexion" />
                 </NavLink>
-            }
-
+              )}
+            </div>
+            <div className="hamburger sm:hidden">
+              <BurgerMenu></BurgerMenu>
+            </div>
           </div>
-          <div className="hamburger sm:hidden">
-            <BurgerMenu></BurgerMenu>
-          </div>
-        </div>
-      </nav>
+        </nav>
+      )}
     </div>
   );
 };

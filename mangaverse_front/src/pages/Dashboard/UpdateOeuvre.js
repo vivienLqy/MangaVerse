@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import NavAdmin from "../components/wrapper/NavAdmin";
+import NavAdmin from "../../components/wrapper/NavAdmin";
 import { useParams, useNavigate } from "react-router-dom";
 
 
@@ -99,22 +99,22 @@ const UpdateOeuvre = () => {
                     <div className="w-full h-96 bg-bgAdmin bg-no-repeat bg-cover bg-center">
                         <h1 className="flex h-full justify-center items-center text-white">Produits</h1>
                     </div>
-                    <div className="bg-white bg-opacity-10 w-1/2 flex justify-center items-center my-20 text-white">
+                    <div className="bg-white bg-opacity-10 w-1/3 flex justify-center items-center my-20 text-white">
                         <div className="w-full flex flex-col justify-center items-center my-10">
                             {selectedOeuvre && (
                                 <div className="w-10/12 flex flex-col justify-center items-center">
-                                    <form className="w-full">
+                                    <form className="w-52">
                                         <div className="text-center mb-5">
                                             <h3>{selectedOeuvre.name}</h3>
                                         </div>
-                                        <div id="oui" className="flex flex-row w-full justify-between">
+                                        <div id="oui" className="flex flex-col justify-between items-center w-full">
                                             <img
                                                 src={`/img/manga/${selectedOeuvre.name.replace(
                                                     /\s+/g,
                                                     ""
                                                 )}/${selectedOeuvre.picture}`}
                                                 alt="One piece"
-                                                className="h-48 mt-1"
+                                                className="mt-1"
                                             />
                                             <div className="w-full ms-1 flex flex-col justify-between text-center">
                                                 <div className="bg-blackOP30 my-1 text-center">
@@ -146,10 +146,10 @@ const UpdateOeuvre = () => {
                                                 </div>
 
                                             </div>
-                                        </div>
-                                        <div className=" w-full flex justify-around mt-5">
-                                            <button type="button" className=" bg-red-700 rounded-md px-10 py-2 " onClick={handleCancel}>Annuler</button>
-                                            <button type="button" className=" bg-green-700 rounded-md px-10 py-2" onClick={handleValidation}>Valider</button>
+                                            <div className="w-full flex justify-center gap-4 mt-5">
+                                                <button type="button" className=" bg-red-700 rounded-md px-10 py-2 " onClick={handleCancel}>Annuler</button>
+                                                <button type="button" className=" bg-green-700 rounded-md px-10 py-2" onClick={handleValidation}>Valider</button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>

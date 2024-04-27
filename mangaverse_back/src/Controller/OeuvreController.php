@@ -49,7 +49,7 @@ class OeuvreController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['PUT'])]
-    // #[IsGranted("ROLE_ADMIN", message: "Vous n'avez pas les droits necessaire pour modifer un livre")]
+    #[IsGranted("ROLE_ADMIN", message: "Vous n'avez pas les droits necessaire pour modifer un livre")]
     public function put(int $id, #[MapRequestPayload] Oeuvre $oeuvre): Response
     {
         $message = $this->oeuvreService->updateAll($id, $oeuvre);

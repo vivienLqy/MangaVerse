@@ -59,7 +59,7 @@ const Form = () => {
             </div>
             <div className=" mt-4">
               <input
-                type="sujet"
+                type="text"
                 {...register("sujet")}
                 id="sujet"
                 name="sujet"
