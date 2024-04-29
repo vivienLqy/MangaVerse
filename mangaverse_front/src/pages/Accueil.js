@@ -17,7 +17,7 @@ const Accueil = () => {
         </div>
       </div>
 
-      <div className="flex lg:w-1/2 m-auto flex-wrap lg:flex-nowrap py-16">
+      <div className="flex lg:w-2/3 m-auto flex-wrap lg:flex-nowrap py-16">
         <div className="bg-white text-white bg-opacity-10 p-6">
           <p>
             Depuis 2009, nous vous proposons

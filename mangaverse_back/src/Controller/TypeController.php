@@ -23,25 +23,25 @@ class TypeController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('/api/type', methods: ['POST'])]
+    #[Route('/api/types', methods: ['POST'])]
     public function create(#[MapRequestPayload()] Type $type): Response
     {
         return new Response($this->serializer->serialize($this->typeService->create($type), 'json'));
     }
 
-    #[Route('/api/type', methods: ['GET'])]
+    #[Route('/api/types', methods: ['GET'])]
     public function getAll(): Response
     {
         return new Response($this->serializer->serialize($this->typeService->getAll(), 'json', ['groups' => 'getType']));
     }
 
-    #[Route('/api/type/{id}', methods: ['GET'])]
+    #[Route('/api/types/{id}', methods: ['GET'])]
     public function get(int $id): Response
     {
         return new Response($this->serializer->serialize($this->typeService->get($id), 'json', ['groups' => 'getType']));
     }
 
-    #[Route('api/type/{id}', methods: ['PUT'])]
+    #[Route('api/types/{id}', methods: ['PUT'])]
     public function put(int $id, #[MapRequestPayload] Type $type): Response
     {
         $message = $this->typeService->put($id, $type);

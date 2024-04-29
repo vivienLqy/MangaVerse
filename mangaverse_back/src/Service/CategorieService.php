@@ -49,10 +49,10 @@ class CategorieService
 
     public function deleteById(int $id): string
     {
-        $products = $this->em->getRepository(Categorie::class)->find($id);
+        $existingCategorie = $this->em->getRepository(Categorie::class)->find($id);
 
-        if ($products) {
-            $this->em->remove($products);
+        if ($existingCategorie) {
+            $this->em->remove($existingCategorie);
             $this->em->flush();
             return "L'élément avec l'id $id a été supprimé avec succès.";
         } else {

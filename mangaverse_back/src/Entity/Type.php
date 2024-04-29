@@ -30,7 +30,6 @@ class Type
     public function __construct()
     {
         $this->oeuvres = new ArrayCollection();
-        $this->Types = new ArrayCollection();
     }
 
     public function getId(): ?int

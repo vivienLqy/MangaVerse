@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: GenreRepository::class)]
+#[Groups(['getGenre'])]
 class Genre
 {
     #[ORM\Id]
@@ -17,7 +18,7 @@ class Genre
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(["getProduct", "getOeuvre", "getGenre"])]
+    #[Groups(["getProduct", "getOeuvre"])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Oeuvre::class, inversedBy: 'genres')]
