@@ -22,13 +22,13 @@ class CategorieController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('/api/categorie', methods: ['POST'])]
+    #[Route('/api/categories', methods: ['POST'])]
     public function create(#[MapRequestPayload()] Categorie $categorie): Response
     {
         return new Response($this->serializer->serialize($this->categorieService->create($categorie), 'json'));
     }
 
-    #[Route('/api/categorie', methods: ['GET'])]
+    #[Route('/api/categories', methods: ['GET'])]
     public function getAll(): Response
     {
         return new Response($this->serializer->serialize($this->categorieService->getAll(), 'json', ['groups' => 'getCategorie']));
@@ -47,7 +47,7 @@ class CategorieController extends AbstractController
         return new Response($message);
     }
 
-    #[Route('/api/products/{id}', methods: ['DELETE'])]
+    #[Route('/api/categorie/{id}', methods: ['DELETE'])]
     public function delete(int $id): Response
     {
         $message = $this->categorieService->deleteById($id);

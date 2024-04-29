@@ -17,7 +17,7 @@ class Genre
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(["getProduct", "getOeuvre"])]
+    #[Groups(["getProduct", "getOeuvre", "getGenre"])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Oeuvre::class, inversedBy: 'genres')]
