@@ -1,9 +1,12 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Formulaire from "../components/forms/Form";
 
 const Contact = () => {
+
   return (
-    <div className="bg-bgTest bg-no-repeat bg-cover bg-center h-full">
-      <div className="text-center py-4">
+    <div className="flex flex-col h-screen">
+      <div className="text-center py-4 bg-bgTest object-fill h-full">
         <Formulaire />
       </div>
     </div>

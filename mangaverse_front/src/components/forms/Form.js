@@ -1,27 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const Form = () => {
-
   const nameRegex = /^[a-zA-Z\- ]{2,}$/;
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const phoneRegex = /^\+(?:\d{1,3})?\d{10,14}$/;
   const sujetRegex = /^[a-zA-Z0-9\s\-,.!?:;'"()]+$/;
   const messageRegex = /^[a-zA-Z0-9\s\n\-,.!?:;'"()]+$/;
 
-
   const [firstname, setFirstname] = useState('');
   const [validFirstname, setValidFirstname] = useState(false);
   const [lastname, setLastname] = useState('');
   const [validLastname, setValidLastname] = useState(false);
-  const [phone, setPhone] = useState(false);
-  const [validPhone, setValidPhone] = useState('')
+  const [phone, setPhone] = useState('');
+  const [validPhone, setValidPhone] = useState(false);
   const [email, setEmail] = useState('');
   const [validEmail, setValidEmail] = useState(false);
-  const [sujet, setSujet] = useState(false);
-  const [validSujet, setValidSujet] = useState('');
-  const [msg, setMsg] = useState(false);
-  const [validMsg, setValidMsg] = useState('');
-
+  const [sujet, setSujet] = useState('');
+  const [validSujet, setValidSujet] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [validMsg, setValidMsg] = useState(false);
 
   const firstnameRef = useRef(null);
   const lastnameRef = useRef(null);
@@ -31,117 +28,142 @@ const Form = () => {
   const messageRef = useRef(null);
 
   useEffect(() => {
-    firstnameRef.current.focus();
-  }, []);
-
-  useEffect(() => {
-    const result = emailRegex.test(email)
-    setValidEmail(emailRegex.test(email))
-  }, [email]);
-
-  useEffect(() => {
-    const result = phoneRegex.test(phone)
-    setValidPhone(phoneRegex.test(phone))
-  }, [phone]);
-
-  useEffect(() => {
-    const result = nameRegex.test(firstname)
-    setValidFirstname(nameRegex.test(firstname))
+    setValidFirstname(nameRegex.test(firstname));
   }, [firstname]);
 
   useEffect(() => {
-    const result = nameRegex.test(lastname)
-    setValidLastname(nameRegex.test(lastname))
+    setValidLastname(nameRegex.test(lastname));
   }, [lastname]);
 
   useEffect(() => {
-    const result = sujetRegex.test(sujet)
-    setValidLastname(sujetRegex.test(sujet))
+    setValidEmail(emailRegex.test(email));
+  }, [email]);
+
+  useEffect(() => {
+    setValidPhone(phoneRegex.test(phone));
+  }, [phone]);
+
+  useEffect(() => {
+    setValidSujet(sujetRegex.test(sujet));
   }, [sujet]);
 
   useEffect(() => {
-    const result = msgRegex.test(msg)
-    setValidLastname(msgRegex.test(msg))
+    setValidMsg(messageRegex.test(msg));
   }, [msg]);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Ajoute ici la logique pour traiter le formulaire soumis
+  };
 
   return (
-    <form>
-      <div className="w-1/3 mx-auto bg-gray-700 rounded-lg ">
-        <div className="flex flex-col mt items-center">
-          <h2 className="text-2xl mt-5">Formulaire de contact</h2>
-        </div>
-        <div className="md:flex justify-center"> {/* Centering the input fields */}
-          <div className="w-full p-4 flex flex-col justify-around">
-            <div className="flex my-2">
-              <div className="w-1/2 pr-2">
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="Nom"
-                  className="py-3 text-center w-full bg-gray-800 rounded text-gray-100"
-                />
+    <form onSubmit={handleSubmit}>
+      <div className="md:w-2/3 lg:w-1/3 mx-auto bg-gray-700 rounded-lg p-6 flex flex-col">
+        <h2 className="text-2xl text-white mb-5 text-center">Contactez-nous</h2>
+        <div className="flex flex-wrap mb-4">
+          <div className="w-full lg:w-1/2 lg:pr-2 mb-4 lg:mb-0">
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Nom"
+              className={`py-3 px-4 w-full bg-gray-800 rounded text-gray-100 border ${!validLastname && lastname ? 'border-red-500' : validLastname ? 'border-green-500' : ''}`}
+              value={lastname}
+              onChange={(e) => setLastname(e.target.value)}
+            />
+            {!validLastname && lastname && (
+              <div className="text-red-500 text-sm mt-1">
+                Veuillez entrer un nom valide (au moins 2 caractères).
               </div>
-              <div className="w-1/2 pl-2">
-                <input
-                  type="text"
-                  id="prenom"
-                  name="prenom"
-                  ref={firstnameRef}
-                  placeholder="Prenom"
-                  className="py-3 text-center w-full bg-gray-800 rounded text-gray-100"
-                />
+            )}
+          </div>
+          <div className="w-full lg:w-1/2 lg:pl-2">
+            <input
+              type="text"
+              id="prenom"
+              name="prenom"
+              placeholder="Prénom"
+              className={`py-3 px-4 w-full bg-gray-800 rounded text-gray-100 border ${!validFirstname && firstname ? 'border-red-500' : validFirstname ? 'border-green-500' : ''}`}
+              value={firstname}
+              onChange={(e) => setFirstname(e.target.value)}
+            />
+            {!validFirstname && firstname && (
+              <div className="text-red-500 text-sm mt-1">
+                Veuillez entrer un prénom valide (au moins 2 caractères).
               </div>
-            </div>
-            <div className="my-2">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Email"
-                className="py-3 text-center w-full bg-gray-800 rounded text-gray-100"
-              />
-            </div>
-            <div className="my-2">
-              <input
-                type="tel"
-                id="telephone"
-                name="telephone"
-                placeholder="Telephone"
-                className="py-3 text-center w-full bg-gray-800 rounded text-gray-100"
-              />
-            </div>
-            <div className="my-2">
-              <input
-                type="text"
-                id="sujet"
-                name="sujet"
-                placeholder="Sujet"
-                className="py-3 text-center w-full bg-gray-800 rounded text-gray-100"
-              />
-            </div>
-            <div className="my-2">
-              <textarea
-                id="message"
-                name="message"
-                placeholder="Message"
-                className="text-center w-full bg-gray-800 rounded text-gray-100 py-1 px-3"
-              ></textarea>
-            </div>
+            )}
           </div>
         </div>
-        <div className="flex flex-col justify-center gap-5 py-7">
-          <div className="">
-            <button className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-              Envoyer
-            </button>
-          </div>
-          <div className="">
-            <button className="text-blue-300 border-0 py-2 px-6 focus:outline-none hover:bg-gray-700 rounded text-lg">
-              Retour
-            </button>
-          </div>
+        <div className="mb-4">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            className={`py-3 px-4 w-full bg-gray-800 rounded text-gray-100 border ${!validEmail && email ? 'border-red-500' : validEmail ? 'border-green-500' : ''}`}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {!validEmail && email && (
+            <div className="text-red-500 text-sm mt-1">
+              Veuillez entrer une adresse email valide.
+            </div>
+          )}
+        </div>
+        <div className="mb-4">
+          <input
+            type="tel"
+            id="telephone"
+            name="telephone"
+            placeholder="Téléphone"
+            className={`py-3 px-4 w-full bg-gray-800 rounded text-gray-100 border ${!validPhone && phone ? 'border-red-500' : validPhone ? 'border-green-500' : ''}`}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          {!validPhone && phone && (
+            <div className="text-red-500 text-sm mt-1">
+              Veuillez entrer un numéro de téléphone valide.
+            </div>
+          )}
+        </div>
+        <div className="mb-4">
+          <input
+            type="text"
+            id="sujet"
+            name="sujet"
+            placeholder="Sujet"
+            className={`py-3 px-4 w-full bg-gray-800 rounded text-gray-100 border ${!validSujet && sujet ? 'border-red-500' : validSujet ? 'border-green-500' : ''}`}
+            value={sujet}
+            onChange={(e) => setSujet(e.target.value)}
+          />
+          {!validSujet && sujet && (
+            <div className="text-red-500 text-sm mt-1">
+              Le sujet doit contenir uniquement des lettres, des chiffres, des espaces et les caractères spéciaux suivants : -,.!?:;'"()
+            </div>
+          )}
+        </div>
+        <div className="mb-4">
+          <textarea
+            id="message"
+            name="message"
+            placeholder="Message"
+            className={`py-3 px-4 w-full bg-gray-800 rounded text-gray-100 border ${!validMsg && msg ? 'border-red-500' : validMsg ? 'border-green-500' : ''}`}
+            value={msg}
+            onChange={(e) => setMsg(e.target.value)}
+          ></textarea>
+          {!validMsg && msg && (
+            <div className="text-red-500 text-sm mt-1">
+              Le message doit contenir uniquement des lettres, des chiffres, des espaces et les caractères spéciaux suivants : -,.!?:;'"()
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col justify-center w-full align-middle items-center">
+          <button type="submit" className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+            Envoyer
+          </button>
+          <button className="text-blue-300 border-0 py-2 px-6 focus:outline-none hover:bg-gray-700 rounded text-lg">
+            Retour
+          </button>
         </div>
       </div>
     </form>
