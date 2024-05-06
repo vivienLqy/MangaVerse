@@ -12,7 +12,7 @@ const NavAdmin = () => {
     return (
         <div className='flex w-1/6 bg-nav justify-center'>
             <div className="flex flex-col">
-                <div>
+                <div className=' mt-10'>
                     <NavLink to="/">
                         <img className="m-auto" src={Logo} alt="logo" />
                     </NavLink>

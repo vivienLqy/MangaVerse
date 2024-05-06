@@ -59,7 +59,7 @@ security:
     - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/profile, roles: ROLE_USER }
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
-    - { path: ^/dashboard, roles: IS_AUTHENTICATION_LOGIN }
+    - { path: ^/dashboard, roles: ROLE_ADMIN }
 
 when@test:
   security:

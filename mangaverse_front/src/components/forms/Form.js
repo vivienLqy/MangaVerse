@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 
 const Form = () => {
   const nameRegex = /^[a-zA-Z\- ]{2,}$/;
@@ -19,6 +20,7 @@ const Form = () => {
   const [validSujet, setValidSujet] = useState(false);
   const [msg, setMsg] = useState('');
   const [validMsg, setValidMsg] = useState(false);
+  const [data, setData] = useState([])
 
   const firstnameRef = useRef(null);
   const lastnameRef = useRef(null);
@@ -53,7 +55,20 @@ const Form = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Ajoute ici la logique pour traiter le formulaire soumis
+    axios.post(`http://localhost:8000/contact`, {
+    })
+      .then((res) => {
+        setData(res.data)
+        console.log("data", res.data);
+        console.log("Mise à jour réussie !");
+        // Définir le message flash
+        // setFlashMessage("Mise à jour réussie !");
+        // Redirection vers la page de tableau de bord après la modification réussie
+
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour : ", error);
+      });
   };
 
   return (

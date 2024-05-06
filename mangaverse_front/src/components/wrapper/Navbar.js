@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import BurgerMenu from "../BurgerMenu";
 import Login from "../../assets/login.svg";
-import Search from "../../assets/search.svg";
+import Dashboard from "../../assets/dashboard.svg";
 import Shop from "../../assets/shop.svg";
 import Logo from "../../assets/Logo.svg";
 import Logout from "../../assets/logout.svg";
@@ -62,18 +62,15 @@ const Navbar = () => {
                 <NavLink to="/contact">
                   <li className="bg-lavande p-5">Contact</li>
                 </NavLink>
-                {roles !== null && roles.includes("ROLE_ADMIN") && (
-                  <NavLink to="/dashboard">
-                    <li className="p-5 text-purple-400 underline hover:text-red-600 ">dashboard</li>
-                  </NavLink>
-                )}
               </ul>
             </div>
             <div className="hidden sm:flex w-36 justify-between size-6">
-              <NavLink to="/" className="svg-container">
-                <img src={Search} alt="loupe" />
-              </NavLink>
-              <NavLink to="/dashboard" className="svg-container">
+              {roles !== null && roles.includes("ROLE_ADMIN") && (
+                <NavLink to="/dashboard" className="svg-container">
+                  <img src={Dashboard} alt="loupe" />
+                </NavLink>
+              )}
+              <NavLink to="" className="svg-container">
                 <img src={Shop} alt="boutique" />
               </NavLink>
               {localStorage.getItem("token") ? (

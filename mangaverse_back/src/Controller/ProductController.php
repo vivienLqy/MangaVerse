@@ -30,9 +30,8 @@ class ProductController extends AbstractController
     // #[IsGranted('ROLE_ADMIN', message: "Vous n'avez pas les droits necessaire pour creer un livre")]
     public function create(#[MapRequestPayload()] Product $Product): Response
     {
-        return new Response($this->serializer->serialize($this->productsService->create($Product), 'json'));
+        return new Response($this->serializer->serialize($this->productsService->create($Product), 'json', ['groups' => 'getProduct']));
     }
-
     #[Route('api/products', methods: ['GET'])]
     public function getAll(): Response
     {

@@ -126,7 +126,7 @@ const UpdateOeuvre = () => {
                                                 <div className="bg-blackOP30 my-1">
                                                     <input type="number" onChange={(e) => setRating(parseInt(e.target.value))} name="rating" defaultValue={selectedOeuvre.rating} className="bg-transparent w-full" />
                                                 </div>
-                                                <div className="bg-blackOP30 flex flex-row">
+                                                {/* <div className="bg-blackOP30 flex flex-row">
                                                     <select value={selectedCategory} onChange={handleCategoryChange} className=" bg-transparent ">
                                                         <option value="" className="bg-transparent">{selectedOeuvre.categories?.name}</option>
                                                         {categories.map((category) => (
@@ -143,7 +143,7 @@ const UpdateOeuvre = () => {
                                                             </option>
                                                         ))}
                                                     </select>
-                                                </div>
+                                                </div> */}
 
                                             </div>
                                             <div className="w-full flex justify-center gap-4 mt-5">

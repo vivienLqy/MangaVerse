@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -35,7 +37,7 @@ class Product
     #[ORM\ManyToOne]
     private ?Oeuvre $oeuvres = null;
 
-    #[ORM\ManyToOne(inversedBy: 'categories')]
+    #[ORM\ManyToOne(inversedBy: 'categories', cascade: ['persist'])]
     private ?Categorie $categorie = null;
 
     #[ORM\ManyToOne(inversedBy: 'Types')]

@@ -2,7 +2,10 @@
 
 namespace App\Service;
 
+use App\Entity\Categorie;
+use App\Entity\Oeuvre;
 use App\Entity\Product;
+use App\Entity\Type;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ProductService
@@ -14,18 +17,49 @@ class ProductService
         $this->em = $em;
     }
 
-    public function create(Product $products)
+    public function create(Product $product)
     {
-        $product = new Product();
-        $product->setName($products->getName());
-        $product->setPrix($products->getPrix());
-        $product->setPicture($products->getPicture());
-        $product->setQuantiter($products->getQuantiter());
-        $product->setCreatedAt($products->getCreatedAt());
+        $newProduct = new Product();
+        $newProduct->setName($product->getName());
+        $newProduct->setPrix($product->getPrix());
+        $newProduct->setPicture($product->getPicture());
+        $newProduct->setQuantiter($product->getQuantiter());
+        $newProduct->setCreatedAt(new \DateTimeImmutable());
 
-        $this->em->persist($product);
+        if ($product->getCategorie()) {
+            $categorieName = $product->getCategorie()->getName();
+
+            $categorie = $this->em->getRepository(Categorie::class)->findOneBy(['name' => $categorieName]);
+
+            if ($categorie) {
+                $newProduct->setCategorie($this->em->getReference(Categorie::class, $categorie->getId()));
+            } else {
+                throw new \Exception("La catégorie spécifiée n'existe pas.");
+            }
+        }
+        if ($product->getOeuvres()) {
+            $oeuvreName = $product->getOeuvres()->getName();
+            $oeuvre = $this->em->getRepository(Oeuvre::class)->findOneBy(['name' => $oeuvreName]);
+
+            if ($oeuvre) {
+                $newProduct->setOeuvres($this->em->getReference(Oeuvre::class, $oeuvre->getId()));
+            } else {
+                throw new \Exception("L'œuvre spécifiée n'existe pas.");
+            }
+        }
+        if ($product->getType()) {
+            $typeName = $product->getType()->getName();
+            $type = $this->em->getRepository(Type::class)->findOneBy(['name' => $typeName]);
+
+            if ($type) {
+                $newProduct->setType($this->em->getReference(Type::class, $type->getId()));
+            } else {
+                throw new \Exception("Le type spécifiée n'existe pas.");
+            }
+        }
+        $this->em->persist($newProduct);
         $this->em->flush();
-        return $product;
+        return $newProduct;
     }
 
     public function getAll(): array
