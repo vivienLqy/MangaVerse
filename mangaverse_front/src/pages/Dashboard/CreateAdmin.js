@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 
 const CreateAdmin = () => {
   const [name, setName] = useState("");
-  const [prix, setPrix] = useState();
-  const [picture, setPicture] = useState("");
-  const [quantiter, setQuantiter] = useState();
+  const [prix, setPrix] = useState("");
+  const [quantite, setQuantite] = useState("");
   const [categorieId, setCategorieId] = useState(0);
   const [categories, setCategories] = useState([]);
   const [oeuvreId, setOeuvreId] = useState(0);
   const [oeuvres, setOeuvres] = useState([]);
   const [typeId, setTypeId] = useState(0);
   const [types, setTypes] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/categories')
@@ -56,11 +56,25 @@ const CreateAdmin = () => {
   }, []);
 
   const navigate = useNavigate();
-  const publicUrl = process.env.PUBLIC_URL;
 
-  console.log(publicUrl);
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.files[0]);
+  };
 
-  const handleSubmit = useCallback((e) => {
+  const converToBase64 = (e) => {
+    console.log(e);
+    var reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      console.log(reader.result);
+      setSelectedImage(reader.result);
+    };
+    reader.onerror = error => {
+      console.log("Error : ", error);
+    }
+  }
+
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
 
     const selectedCategoryId = parseInt(categorieId);
@@ -75,45 +89,64 @@ const CreateAdmin = () => {
       const oeuvreName = selectedOeuvre.name;
       const typeName = selectedType.name;
 
-      console.log(picture);
+      console.log(selectedImage);
 
-      axios.post(`http://localhost:8000/api/products`, {
-        name: name,
-        prix: prix,
-        picture: picture,
-        quantiter: quantiter,
-        categorie: {
-          name: categorieName
-        },
-        oeuvres: {
-          name: oeuvreName
-        },
-        type: {
-          name: typeName
-        }
-      })
-        .then((res) => {
-          console.log("Produit créé avec succès !");
-          navigate("/dashboard"); // Redirection après création réussie
-        })
-        .catch((error) => {
-          console.error(
-            "Une erreur s'est produite lors de la création du produit : ",
-            error
-          );
+      const formData = new FormData();
+      formData.append('image', selectedImage.split(',')[1]);
+      formData.append('oeuvreName', oeuvreName);
+
+      try {
+        const response = await axios.post('http://localhost:8000/upload-image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         });
+
+        if (response.status === 200) {
+          console.log('Image uploaded successfully');
+
+          axios.post(`http://localhost:8000/api/products`, {
+            name: name,
+            prix: prix,
+            quantite: quantite,
+            categorie: {
+              name: categorieName
+            },
+            oeuvres: {
+              name: oeuvreName
+            },
+            type: {
+              name: typeName
+            }
+          })
+            .then((res) => {
+              console.log("Produit créé avec succès !");
+              navigate("/dashboard");
+            })
+            .catch((error) => {
+              console.error(
+                "Une erreur s'est produite lors de la création du produit : ",
+                error
+              );
+            });
+        } else {
+          console.error('Failed to upload image');
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     } else {
-      console.error("Veuillez sélectionner une catégorie et une œuvre");
+      console.error("Veuillez sélectionner une catégorie, une œuvre et un type");
     }
-  }, [categorieId, categories, name, navigate, oeuvreId, oeuvres, picture, prix, quantiter, typeId, types]);
+  }, [categorieId, categories, name, navigate, oeuvreId, oeuvres, prix, quantite, typeId, types, selectedImage]);
 
   const handleCancel = () => {
     navigate("/dashboard");
   };
 
-
   return (
     <section>
+      <img src={selectedImage} alt="Image encodée en base64" />
       <div className="w-full flex flex-row bg-bleuDark">
         <NavAdmin />
         <div className="w-full flex flex-col justify-center items-center">
@@ -175,20 +208,20 @@ const CreateAdmin = () => {
                 <div className="bg-blackOP30 mb-4 text-center">
                   <input
                     type="file"
-                    name="picture"
+                    name="image"
                     placeholder="Chemin image"
-                    value={picture}
-                    onChange={(e) => setPicture(e.target.value)}
+                    onChange={converToBase64}
                     className="bg-transparent w-full p-2"
                   />
+                  {selectedImage === "" || selectedImage === null ? "" : <img width={100} height={100} src={selectedImage} />}
                 </div>
                 <div className="bg-blackOP30 mb-4 text-center">
                   <input
                     type="number"
-                    name="quantiter"
+                    name="quantite"
                     placeholder="Quantité disponible"
-                    value={quantiter}
-                    onChange={(e) => setQuantiter(parseInt(e.target.value))}
+                    value={quantite}
+                    onChange={(e) => setQuantite(parseInt(e.target.value))}
                     className="bg-transparent w-full p-2"
                   />
                 </div>
@@ -200,8 +233,8 @@ const CreateAdmin = () => {
             </div>
           </div>
         </div>
-      </div >
-    </section >
+      </div>
+    </section>
   );
 };
 

@@ -22,7 +22,6 @@ class ProductService
         $newProduct = new Product();
         $newProduct->setName($product->getName());
         $newProduct->setPrix($product->getPrix());
-        $newProduct->setPicture($product->getPicture());
         $newProduct->setQuantiter($product->getQuantiter());
         $newProduct->setCreatedAt(new \DateTimeImmutable());
 

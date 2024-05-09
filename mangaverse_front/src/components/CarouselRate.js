@@ -14,7 +14,7 @@ const CarouselRate = () => {
         }
       })
       .then((res) => {
-        // Tri des œuvres par date de création
+        // Tri des œuvres par popularité 
         const sortedWorks = res.data.sort((a, b) => (b.rating) - (a.rating));
         // Limiter aux 6 œuvres les plus récentes
         const limitedWorks = sortedWorks.slice(0, 6);
