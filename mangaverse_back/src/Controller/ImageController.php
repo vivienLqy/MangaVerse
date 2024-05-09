@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
-use App\Service\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,52 +9,51 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ImageController extends AbstractController
 {
-    private ProductService $productService;
-
-    public function __construct(ProductService $productService)
-    {
-        $this->productService = $productService;
-    }
-
     #[Route("/upload-image", methods: ['POST'])]
     public function uploadImage(Request $request): Response
     {
         $base64Image = $request->request->get('image');
         $oeuvreName = $request->request->get('oeuvreName');
-        $productPrice = $request->request->get('oeuvreName');
-
-        if (!$base64Image || !$oeuvreName) {
-            return new Response('Missing image or oeuvreName', Response::HTTP_BAD_REQUEST);
+        // Validation du nom de l'oeuvre
+        if (empty($oeuvreName)) {
+            return new Response('Missing oeuvreName', Response::HTTP_BAD_REQUEST);
         }
 
-        $oeuvreName = strtolower(str_replace(' ', '', $oeuvreName));
+        // Transformation du nom de l'oeuvre en format valide pour le répertoire
+        $oeuvreDirectoryName = strtolower(str_replace(' ', '', $oeuvreName));
 
-        $destination = $this->getParameter('images_directory') . DIRECTORY_SEPARATOR . $oeuvreName;
+        if ($base64Image) {
+            // Convertir la chaîne base64 en données binaires
+            $imageData = base64_decode($base64Image);
 
-        if (!file_exists($destination)) {
-            mkdir($destination, 0777, true);
-        }
+            // Générer un nom de fichier unique
+            $fileName = $oeuvreDirectoryName . uniqid() . '.png';
 
-        try {
-            $imageData = base64_decode($base64Image, true);
+            // Chemin du répertoire de destination
+            $destinationDirectory = $this->getParameter('kernel.project_dir') . '/public/img/manga/' .  $oeuvreDirectoryName;
 
-            if ($imageData === false) {
-                return new Response('Failed to decode base64Image', Response::HTTP_BAD_REQUEST);
+            // Créer le répertoire s'il n'existe pas
+            if (!file_exists($destinationDirectory)) {
+                mkdir($destinationDirectory, 0777, true);
             }
 
-            $uniqueFileName = $oeuvreName . '_' . uniqid() . '.png';
+            // Chemin complet du fichier de destination
+            $destinationPath = $destinationDirectory . DIRECTORY_SEPARATOR . $fileName;
 
-            file_put_contents($destination . DIRECTORY_SEPARATOR . $uniqueFileName, $imageData);
+            dump($destinationPath);
 
-            $imagePath = $destination . DIRECTORY_SEPARATOR . $uniqueFileName;
-            $imageProduct = new Product();
-            $imageProduct->setName($oeuvreName);
-            $imageProduct->setPicture($imagePath);
-            $this->productService->create($imageProduct);
 
-            return new Response('Image uploaded and product created successfully', Response::HTTP_OK);
-        } catch (\Exception $e) {
-            return new Response('Failed to upload image', Response::HTTP_INTERNAL_SERVER_ERROR);
+            // Enregistrer l'image dans le dossier public
+            if (file_put_contents($destinationPath, $imageData)) {
+                // Retourner une réponse avec le chemin de l'image enregistrée
+                return new Response($request->getSchemeAndHttpHost() . '/img/' . $oeuvreDirectoryName . '/' . $fileName, Response::HTTP_CREATED);
+            } else {
+                // Gérer l'échec de l'enregistrement du fichier
+                return new Response('Erreur lors de l\'enregistrement de l\'image', Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            // Retourner une réponse avec un message d'erreur si aucune image n'est fournie
+            return new Response('Aucune image fournie', Response::HTTP_BAD_REQUEST);
         }
     }
 }

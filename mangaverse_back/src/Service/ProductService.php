@@ -17,13 +17,15 @@ class ProductService
         $this->em = $em;
     }
 
-    public function create(Product $product)
+    public function create(Product $product): Product
     {
         $newProduct = new Product();
         $newProduct->setName($product->getName());
         $newProduct->setPrix($product->getPrix());
         $newProduct->setQuantiter($product->getQuantiter());
         $newProduct->setCreatedAt(new \DateTimeImmutable());
+        $newProduct->setPicture($product->getPicture());
+
 
         if ($product->getCategorie()) {
             $categorieName = $product->getCategorie()->getName();
@@ -53,7 +55,7 @@ class ProductService
             if ($type) {
                 $newProduct->setType($this->em->getReference(Type::class, $type->getId()));
             } else {
-                throw new \Exception("Le type spécifiée n'existe pas.");
+                throw new \Exception("Le type spécifié n'existe pas.");
             }
         }
         $this->em->persist($newProduct);
@@ -73,14 +75,14 @@ class ProductService
 
     public function delete(int $id): string
     {
-        $products = $this->em->getRepository(Product::class)->find($id);
+        $product = $this->em->getRepository(Product::class)->find($id);
 
-        if ($products) {
-            $this->em->remove($products);
+        if ($product) {
+            $this->em->remove($product);
             $this->em->flush();
-            return "L'élément avec l'id $id a été supprimé avec succès.";
+            return "Le produit avec l'id $id a été supprimé avec succès.";
         } else {
-            return "Aucun élément avec l'id $id n'a été trouvé.";
+            return "Aucun produit avec l'id $id n'a été trouvé.";
         }
     }
 
@@ -95,13 +97,13 @@ class ProductService
                 ->setQuantiter($product->getQuantiter())
                 ->setCreatedAt($product->getCreatedAt());
 
-
             $this->em->flush();
-            return "Le produit avec l'ID {$id} a été mis a jour avec succès!";
+            return "Le produit avec l'ID {$id} a été mis à jour avec succès !";
         } else {
-            return "Le produit avec l'ID {$id} n'existe pas";
+            return "Le produit avec l'ID {$id} n'existe pas.";
         }
     }
+
     public function update(int $id, Product $product): string
     {
         $existingProduct = $this->em->getRepository(Product::class)->find($id);
@@ -112,7 +114,6 @@ class ProductService
             $existingProduct->setPicture($product->getPicture() ?? $existingProduct->getPicture());
             $existingProduct->setQuantiter($product->getQuantiter() ?? $existingProduct->getQuantiter());
             $existingProduct->setCreatedAt($product->getCreatedAt() ?? $existingProduct->getCreatedAt());
-
 
             $this->em->flush();
 
