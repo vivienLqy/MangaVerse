@@ -6,9 +6,9 @@ const CardProduit = ({ oeuvre }) => {
     <div className="w-52 flex flex-col items-center">
       <NavLink to={`/monproduit/${oeuvre.id}`} className="justify-center">
         <img
-          src={`img/manga/${oeuvre.name.replace(/\s+/g, "").toLowerCase()}/${oeuvre.picture}`}
+          src={`http://localhost:8000/api/img/manga/${oeuvre.picture}`}
           alt={oeuvre.name}
-          className="h-52"
+          className="object-cover h-52"
         />
       </NavLink>
       <p className="mt-2 text-center">

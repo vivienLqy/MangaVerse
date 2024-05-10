@@ -27,7 +27,7 @@ class ImageController extends AbstractController
             $imageData = base64_decode($base64Image);
 
             // Générer un nom de fichier unique
-            $fileName = $oeuvreDirectoryName . uniqid() . '.png';
+            $fileName = "$oeuvreDirectoryName" . uniqid() . '.png';
 
             // Chemin du répertoire de destination
             $destinationDirectory = $this->getParameter('kernel.project_dir') . '/public/img/manga/' .  $oeuvreDirectoryName;
@@ -40,13 +40,10 @@ class ImageController extends AbstractController
             // Chemin complet du fichier de destination
             $destinationPath = $destinationDirectory . DIRECTORY_SEPARATOR . $fileName;
 
-            dump($destinationPath);
-
-
             // Enregistrer l'image dans le dossier public
             if (file_put_contents($destinationPath, $imageData)) {
                 // Retourner une réponse avec le chemin de l'image enregistrée
-                return new Response($request->getSchemeAndHttpHost() . '/img/' . $oeuvreDirectoryName . '/' . $fileName, Response::HTTP_CREATED);
+                return new Response($fileName, Response::HTTP_CREATED);
             } else {
                 // Gérer l'échec de l'enregistrement du fichier
                 return new Response('Erreur lors de l\'enregistrement de l\'image', Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -55,5 +52,31 @@ class ImageController extends AbstractController
             // Retourner une réponse avec un message d'erreur si aucune image n'est fournie
             return new Response('Aucune image fournie', Response::HTTP_BAD_REQUEST);
         }
+    }
+    #[Route('/api/img/manga/{path}', methods: ['GET'])]
+    public function getImage(string $path): Response
+    {
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/img/manga/';
+
+        // Utilisation de preg_split avec une expression régulière
+        $parts = preg_split('/\d/', $path, 2);
+        $filePath .= $parts[0] . '/' . $path;
+
+        // Vérifier si le fichier existe
+        if (!file_exists($filePath) || !is_readable($filePath)) {
+            return new Response('Fichier non trouvé', 404);
+        }
+
+        // Récupérer le type MIME de l'image
+        $mimeType = mime_content_type($filePath);
+
+        // Lire le contenu du fichier
+        $content = file_get_contents($filePath);
+
+        // Créer une réponse avec le contenu et le type MIME
+        $response = new Response($content);
+        $response->headers->set('Content-Type', $mimeType);
+
+        return $response;
     }
 }

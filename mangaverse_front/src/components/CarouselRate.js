@@ -26,6 +26,22 @@ const CarouselRate = () => {
           error
         );
       });
+    axios
+      .get("http://localhost:8000/api/img/manga", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      })
+      .then((res) => {
+        // Stocker les données d'images récentes dans l'état local
+        setRecentWorks(res.data);
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la récupération des images : ",
+          error
+        );
+      });
   }, []);
 
   const nextSlide = () => {
@@ -51,7 +67,7 @@ const CarouselRate = () => {
                 className={`w-full h-full flex justify-center items-center transition-opacity duration-500`}
               >
                 <img
-                  src={`img/manga/${work.name.replace(/\s+/g, "").toLowerCase()}/${work.picture}`}
+                  src={`http://localhost:8000/api/img/manga/${work.picture}`}
                   alt={work.name}
                   className="object-cover h-52"
                 />

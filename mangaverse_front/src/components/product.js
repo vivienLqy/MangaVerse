@@ -5,11 +5,9 @@ const Product = ({ product }) => {
     <section className="flex flex-col items-center justify-around my-4  text-center">
       <div>
         <img
-          src={`/img/manga/${product.oeuvres?.name
-            .replace(/\s+/g, "")
-            .toLowerCase()}/${product.picture}`}
-          alt={product.name}
-          className="h-64 w-full"
+          src={`http://localhost:8000/api/img/manga/${product?.picture}`}
+          alt={product?.name}
+          className="w-44"
         />
         <div className="flex gap-1">
           <p>{product.oeuvres?.name}</p>

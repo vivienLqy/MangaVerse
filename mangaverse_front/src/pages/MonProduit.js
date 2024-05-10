@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 const MonProduit = () => {
   const [products, setProduct] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [productImage, setProductImage] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
@@ -19,6 +20,17 @@ const MonProduit = () => {
       .catch((error) => {
         console.error(
           "Une erreur s'est produite lors de la récupération des produits : ",
+          error
+        );
+      });
+    axios
+      .get(`http://localhost:8000/api/img/manga/${selectedProduct?.picture}`)
+      .then((res) => {
+        setProductImage(res.data); // Assurez-vous que votre API renvoie les données de l'image correctement
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la récupération de l'image : ",
           error
         );
       });
@@ -42,12 +54,9 @@ const MonProduit = () => {
       <div className="flex w-1/2 m-auto ">
         <div className="">
           <img
-            src={`/img/manga/${selectedProduct?.oeuvres?.name.replace(
-              /\s+/g,
-              ""
-            )}/${selectedProduct?.picture}`}
-            alt="One piece"
-            className=" w-44"
+            src={`http://localhost:8000/api/img/manga/${selectedProduct?.picture}`}
+            alt={selectedProduct?.name}
+            className="w-44"
           />
         </div>
         <div className="">

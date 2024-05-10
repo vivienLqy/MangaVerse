@@ -51,6 +51,22 @@ const Catalogue = () => {
       .catch((error) => {
         console.error("Une erreur s'est produite lors de la récupération des types : ", error);
       });
+    axios
+      .get("http://localhost:8000/api/img/manga", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      })
+      .then((res) => {
+        // Stocker les données d'images récentes dans l'état local
+        setOeuvres(res.data);
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la récupération des images : ",
+          error
+        );
+      });
   }, []);
 
   const handleDropdownToggle = (dropdown) => {
