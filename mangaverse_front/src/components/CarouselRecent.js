@@ -60,10 +60,10 @@ const CarouselRecent = () => {
       <div className="flex justify-center">
         <div className="w-full">
           <div className="flex justify-around">
-            {recentWorks.length > 0 && recentWorks.map((work, index) => (
+            {recentWorks.length > 0 && recentWorks.slice(currentIndex, currentIndex + 3).map((work, index) => (
               <div
                 key={index}
-                className={`w-full h-full flex justify-center items-center transition-opacity duration-500 ${index === currentIndex ? "" : "hidden"}`}
+                className={`w-full h-full flex justify-center items-center transition-opacity duration-500`}
               >
                 <img
                   src={`http://localhost:8000/api/img/manga/${work.picture}`}
@@ -75,7 +75,7 @@ const CarouselRecent = () => {
           </div>
         </div>
       </div>
-      0
+
       <button
         onClick={prevSlide}
         className="absolute top-1/2 -translate-y-1/2 left-0 z-10 bg-gray-800/50 text-white rounded-full p-2"

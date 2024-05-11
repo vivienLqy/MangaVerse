@@ -57,9 +57,9 @@ const CreateAdmin = () => {
 
     const navigate = useNavigate();
 
-    const handleImageChange = (e) => {
-        setSelectedImage(e.target.files[0]);
-    };
+    // const handleImageChange = (e) => {
+    //     setSelectedImage(e.target.files[0]);
+    // };
 
     const converToBase64 = (e) => {
         console.log(e);

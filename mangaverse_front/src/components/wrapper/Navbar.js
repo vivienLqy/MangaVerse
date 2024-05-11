@@ -64,7 +64,7 @@ const Navbar = () => {
                 </NavLink>
               </ul>
             </div>
-            <div className="hidden sm:flex w-36 justify-between size-6">
+            <div className="hidden sm:flex w-28 justify-between size-6">
               {roles !== null && roles.includes("ROLE_ADMIN") && (
                 <NavLink to="/dashboard" className="svg-container">
                   <img src={Dashboard} alt="loupe" />
@@ -74,7 +74,7 @@ const Navbar = () => {
                 <img src={Shop} alt="boutique" />
               </NavLink>
               {localStorage.getItem("token") ? (
-                <div className="flex gap-5">
+                <div className="flex gap-3">
                   <NavLink to="/monprofil" className="svg-container">
                     <img src={Login} alt="mon profil" />
                   </NavLink>

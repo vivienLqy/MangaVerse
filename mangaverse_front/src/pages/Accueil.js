@@ -5,7 +5,7 @@ import CarouselRate from "../components/CarouselRate";
 const Accueil = () => {
   return (
     <div className="bg-bleuDark h-full">
-      <div className=" bg-bgAccueil bg-no-repeat bg-cover bg-center">
+      <div className="  bg-bgAdmin bg-no-repeat bg-cover bg-center">
         <h1 className="flex justify-center uppercase cielText font-black text-3xl text-center py-8">
           Commencer une nouvelle serie
         </h1>
