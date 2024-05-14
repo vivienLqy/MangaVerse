@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../../assets/Logo.svg";
-import Login from "../function/LoginFn";
 import axios from "axios";
 
 const FormLog = () => {

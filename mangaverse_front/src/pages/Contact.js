@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import Formulaire from "../components/forms/Form";
 
 const Contact = () => {

@@ -3,7 +3,7 @@ import axios from "axios";
 
 const CarouselRate = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
+  // const [isLargeScreen, setIsLargeScreen] = useState(false);
   const [recentWorks, setRecentWorks] = useState([]);
 
   useEffect(() => {

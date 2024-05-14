@@ -107,6 +107,7 @@ const CreateAdmin = () => {
 
                     const imagePath = response.data
                     setPicture(imagePath);
+                    console.log(picture);
 
                     axios.post(`http://localhost:8000/api/products`, {
                         name: name,
