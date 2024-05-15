@@ -38,6 +38,10 @@ class Oeuvre
     #[ORM\Column(length: 255)]
     private ?string $pegi = null;
 
+    #[ORM\ManyToMany(targetEntity: Genre::class, mappedBy: 'oeuvres')]
+    #[Groups("getProduct")]
+    private Collection $genres;
+
     #[ORM\Column(type: "datetime_immutable")]
     private ?\DateTimeImmutable $created_at = null;
 
@@ -58,9 +62,7 @@ class Oeuvre
     #[ORM\ManyToOne(inversedBy: 'oeuvres')]
     private ?Type $type = null;
 
-    #[ORM\ManyToMany(targetEntity: Genre::class, mappedBy: 'oeuvres')]
-    #[Groups("getProduct")]
-    private Collection $genres;
+
 
     public function __construct()
     {

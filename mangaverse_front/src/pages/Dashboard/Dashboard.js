@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import PanelAdmin from "../../components/admin/PanelAdmin";
-import NavAdmin from "../../components/wrapper/NavAdmin";
+import NavAdmin from "../../components/NavAdmin";
 import OeuvresAdmin from "../../components/admin/OeuvresAdmin";
 import createV from "../../assets/createGreen.svg";
 import { NavLink } from "react-router-dom";
-import { useLocation, useParams } from "react-router-dom"; // Import de useLocation pour récupérer les données de l'état
+import { useLocation } from "react-router-dom"; // Import de useLocation pour récupérer les données de l'état
 import { jwtDecode } from "jwt-decode";
 
 const Dashboard = () => {
@@ -14,7 +14,6 @@ const Dashboard = () => {
   const [selectedOeuvre, setSelectedOeuvre] = useState(null);
   const [flashMessage, setFlashMessage] = useState(""); // Nouvelle propriété d'état pour le message flash
   const location = useLocation();
-  const { id } = useParams(); // Utilisation de useLocation pour récupérer les données de l'état
 
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
@@ -56,7 +55,7 @@ const Dashboard = () => {
       }, 5000);
       return () => clearTimeout(timeout);
     }
-  }, []);
+  }, [location.state]);
 
   const handleDelete = (productId) => {
     axios

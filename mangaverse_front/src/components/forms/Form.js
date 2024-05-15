@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 
 const Form = () => {
-  const nameRegex = /^[a-zA-Z\- ]{2,}$/;
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const phoneRegex = /^\+(?:\d{1,3})?\d{10,14}$/;
-  const sujetRegex = /^[a-zA-Z0-9\s\-,.!?:;'"()]+$/;
-  const messageRegex = /^[a-zA-Z0-9\s\n\-,.!?:;'"()]+$/;
+  const nameRegex = useMemo(() => /^[a-zA-Z\- ]{2,}$/, []);
+  const emailRegex = useMemo(() => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, []);
+  const phoneRegex = useMemo(() => /^\+(?:\d{1,3})?\d{10,14}$/, []);
+  const sujetRegex = useMemo(() => /^[a-zA-Z0-9\s\-,.!?:;'"()]+$/, []);
+  const messageRegex = useMemo(() => /^[a-zA-Z0-9\s\n\-,.!?:;'"()]+$/, []);
 
   const [firstname, setFirstname] = useState('');
   const [validFirstname, setValidFirstname] = useState(false);
@@ -20,51 +20,40 @@ const Form = () => {
   const [validSujet, setValidSujet] = useState(false);
   const [msg, setMsg] = useState('');
   const [validMsg, setValidMsg] = useState(false);
-  const [data, setData] = useState([])
-
-  const firstnameRef = useRef(null);
-  const lastnameRef = useRef(null);
-  const emailRef = useRef(null);
-  const phoneRef = useRef(null);
-  const sujetRef = useRef(null);
-  const messageRef = useRef(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     setValidFirstname(nameRegex.test(firstname));
-  }, [firstname]);
+  }, [firstname, nameRegex]);
 
   useEffect(() => {
     setValidLastname(nameRegex.test(lastname));
-  }, [lastname]);
+  }, [lastname, nameRegex]);
 
   useEffect(() => {
     setValidEmail(emailRegex.test(email));
-  }, [email]);
+  }, [email, emailRegex]);
 
   useEffect(() => {
     setValidPhone(phoneRegex.test(phone));
-  }, [phone]);
+  }, [phone, phoneRegex]);
 
   useEffect(() => {
     setValidSujet(sujetRegex.test(sujet));
-  }, [sujet]);
+  }, [sujet, sujetRegex]);
 
   useEffect(() => {
     setValidMsg(messageRegex.test(msg));
-  }, [msg]);
+  }, [msg, messageRegex]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post(`http://localhost:8000/contact`, {
-    })
+    axios.post(`http://localhost:8000/contact`, {})
       .then((res) => {
         setData(res.data)
+        console.log(data);
         console.log("data", res.data);
         console.log("Mise à jour réussie !");
-        // Définir le message flash
-        // setFlashMessage("Mise à jour réussie !");
-        // Redirection vers la page de tableau de bord après la modification réussie
-
       })
       .catch((error) => {
         console.error("Erreur lors de la mise à jour : ", error);
