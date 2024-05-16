@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { isAuthenticated, isAdmin } from "./components/Auth";
+import { isAdmin } from "./components/Auth";
 import Accueil from "./pages/Accueil";
 import Wrapper from "./components/wrapper";
 import Contact from "./pages/Contact";
@@ -37,7 +37,6 @@ function App() {
           <Route path="/dashboard/create/"
             element={isAdmin() ? <CreateAdmin /> : <Navigate to="/" />} />
           <Route path="/monprofil" element={<Monprofil />} />
-          <Route path="*" element={<Accueil />} />
         </Routes>
       </Wrapper>
     </BrowserRouter>

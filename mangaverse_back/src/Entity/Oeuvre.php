@@ -50,6 +50,7 @@ class Oeuvre
 
     #[ORM\ManyToOne(inversedBy: 'oeuvres')]
     #[MaxDepth(1)]
+    #[Groups(["getProduct"])]
     private ?Auteur $auteur = null;
 
     #[ORM\ManyToOne(inversedBy: 'oeuvres')]

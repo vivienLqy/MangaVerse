@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AuteurRepository::class)]
+#[Groups(['getAuteur'])]
 
 class Auteur
 {
@@ -19,7 +20,7 @@ class Auteur
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getOeuvre'])]
+    #[Groups(['getProduct'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: Oeuvre::class, mappedBy: 'auteur')]

@@ -43,8 +43,12 @@ class OeuvreService
 
     public function updateAll(int $id, Oeuvre $oeuvre): string
     {
-        $existingOeuvre = $this->em->getRepository(Oeuvre::class)->find($id);
-        if ($existingOeuvre) {
+        try {
+            $existingOeuvre = $this->em->getRepository(Oeuvre::class)->find($id);
+            if (!$existingOeuvre) {
+                throw new Exception("Le produit avec l'ID {$id} n'existe pas.");
+            }
+
             $existingOeuvre
                 ->setName($oeuvre->getName())
                 ->setText($oeuvre->getText())
@@ -53,16 +57,20 @@ class OeuvreService
                 ->setCreatedAt($oeuvre->getCreatedAt());
 
             $this->em->flush();
-            return "Le produit avec l'ID {$id} a été mis a jour avec succès!";
-        } else {
-            return "Le produit avec l'ID {$id} n'existe pas";
+            return "Le produit avec l'ID {$id} a été mis à jour avec succès!";
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
+
     public function update(int $id, Oeuvre $oeuvre): string
     {
-        $existingOeuvre = $this->em->getRepository(Oeuvre::class)->find($id);
+        try {
+            $existingOeuvre = $this->em->getRepository(Oeuvre::class)->find($id);
+            if (!$existingOeuvre) {
+                throw new Exception("Le produit avec l'ID {$id} n'existe pas.");
+            }
 
-        if ($existingOeuvre) {
             $existingOeuvre->setName($oeuvre->getName() ?? $existingOeuvre->getName());
             $existingOeuvre->setText($oeuvre->getText() ?? $existingOeuvre->getText());
             $existingOeuvre->setRating($oeuvre->getRating() ?? $existingOeuvre->getRating());
@@ -72,17 +80,18 @@ class OeuvreService
             $this->em->flush();
 
             return "Le produit avec l'ID {$id} a été mis à jour avec succès !";
-        } else {
-            return "Le produit avec l'ID {$id} n'existe pas.";
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
+
     public function delete(Oeuvre $oeuvre): void
     {
         try {
             $this->em->remove($oeuvre);
             $this->em->flush();
         } catch (Exception $e) {
-            throw new Exception("Aucun élément avec l'id" . $oeuvre->getId() . "n'a été trouvé.");
+            throw new Exception("Aucun élément avec l'id " . $oeuvre->getId() . " n'a été trouvé.");
         }
     }
 }

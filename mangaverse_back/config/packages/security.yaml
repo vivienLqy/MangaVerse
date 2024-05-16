@@ -59,6 +59,7 @@ security:
     - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/profile, roles: ROLE_USER }
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api/users, roles: ROLE_ADMIN }
     - { path: ^/dashboard, roles: ROLE_ADMIN }
 
 when@test:

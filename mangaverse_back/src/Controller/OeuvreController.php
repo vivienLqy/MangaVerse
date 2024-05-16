@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Oeuvre;
-use App\Repository\OeuvreRepository;
 use App\Service\OeuvreService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -11,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -33,34 +31,57 @@ class OeuvreController extends AbstractController
     #[IsGranted("ROLE_ADMIN", message: "Vous n'avez pas les droits necessaire pour crée un livre")]
     public function create(#[MapRequestPayload()] Oeuvre $oeuvre): Response
     {
-        return new Response($this->serializer->serialize($this->oeuvreService->create($oeuvre), 'json'));
+        try {
+            $newOeuvre = $this->oeuvreService->create($oeuvre);
+            return new Response($this->serializer->serialize($newOeuvre, 'json'));
+        } catch (Exception $e) {
+            return new Response($e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     #[Route('/', methods: ['GET'])]
     public function getAll(): Response
     {
-        return new Response($this->serializer->serialize($this->oeuvreService->getAll(), 'json', ['groups' => 'getOeuvre']));
+        try {
+            $oeuvres = $this->oeuvreService->getAll();
+            return new Response($this->serializer->serialize($oeuvres, 'json', ['groups' => 'getOeuvre']));
+        } catch (Exception $e) {
+            return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     #[Route('/{id}', methods: ['GET'])]
     public function get(int $id): Response
     {
-        return new Response($this->serializer->serialize($this->oeuvreService->get($id), 'json', ['groups' => 'getOeuvre']));
+        try {
+            $oeuvre = $this->oeuvreService->get($id);
+            return new Response($this->serializer->serialize($oeuvre, 'json', ['groups' => 'getOeuvre']));
+        } catch (Exception $e) {
+            return new Response($e->getMessage(), Response::HTTP_NOT_FOUND);
+        }
     }
 
     #[Route('/{id}', methods: ['PUT'])]
     #[IsGranted("ROLE_ADMIN", message: "Vous n'avez pas les droits necessaire pour modifer un livre")]
     public function put(int $id, #[MapRequestPayload] Oeuvre $oeuvre): Response
     {
-        $message = $this->oeuvreService->updateAll($id, $oeuvre);
-        return new Response($message);
+        try {
+            $message = $this->oeuvreService->updateAll($id, $oeuvre);
+            return new Response($message);
+        } catch (Exception $e) {
+            return new Response($e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     #[Route('/{id}', methods: ['PATCH'])]
     public function patch(int $id, #[MapRequestPayload] Oeuvre $oeuvre): Response
     {
-        $message = $this->oeuvreService->update($id, $oeuvre);
-        return new Response($message);
+        try {
+            $message = $this->oeuvreService->update($id, $oeuvre);
+            return new Response($message);
+        } catch (Exception $e) {
+            return new Response($e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     #[Route('/{id}', methods: ['DELETE'])]

@@ -35,7 +35,7 @@ const MonProduit = () => {
   );
 
   useEffect(() => {
-    if (selectedProduct?.picture) {
+    if (selectedProduct && selectedProduct.picture) {
       axios
         .get(`http://localhost:8000/api/img/manga/${selectedProduct.picture}`)
         .then((res) => {
@@ -48,57 +48,82 @@ const MonProduit = () => {
           );
         });
     }
-  }, [selectedProduct?.picture]);
+  }, [selectedProduct?.picture, selectedProduct]);
+  console.log(selectedProduct)
 
   return (
     <section className="bg-bleuDark text-white">
-      <div className="flex w-1/2 m-auto ">
+      <div className="flex w-1/2 m-auto mt-10">
         <div className="">
           <img
-            src={`http://localhost:8000/api/img/manga/${selectedProduct.picture}`} // Utilisation de productImage pour afficher l'image
+            src={
+              selectedProduct && selectedProduct.picture
+                ? `http://localhost:8000/api/img/manga/${selectedProduct.picture}`
+                : 'placeholder_image_url_here'
+            }
             alt={productImage}
-            className="w-44"
+            className=" w-52"
           />
         </div>
-        <div className="">
-          <p>
-            {selectedProduct
-              ? selectedProduct.oeuvres?.name
-              : "Nom du produit non trouvé"}
-          </p>
-          <p>
-            {selectedProduct
-              ? selectedProduct.type?.name
-              : "type du produit non trouvé"}
-          </p>
-          <p>
-            En stock :
-            {selectedProduct
-              ? selectedProduct.quantiter
-              : "quantité du produit non trouvé"}
-          </p>
+        <div className="flex flex-col justify-between">
+          <div>
+            <h1 className=" text-4xl">
+              {selectedProduct
+                ? selectedProduct.oeuvres?.name
+                : "Nom du produit non trouvé"}
+            </h1>
+            <p>
+              {selectedProduct
+                ? selectedProduct.type?.name
+                : "type du produit non trouvé"} /
+              {selectedProduct && selectedProduct.oeuvres && selectedProduct.oeuvres.genres
+                ? selectedProduct.oeuvres.genres.map((genre, index) => (
+                  <span key={index}>
+                    {genre.name}
+                    {index !== selectedProduct.oeuvres.genres.length - 1 && "/ "}
+                  </span>
+                ))
+                : "genres non trouvés"}
+            </p>
+          </div>
+          <div>
+            <p>
+              En stock :
+              {selectedProduct
+                ? selectedProduct.quantiter
+                : "quantité du produit non trouvé"}
+            </p>
+            <p>
+              Auteur :{" "}
+              {selectedProduct && selectedProduct.oeuvres
+                ? selectedProduct.oeuvres.auteur
+                  ? selectedProduct.oeuvres.auteur.name
+                  : "Auteur non trouvé"
+                : "Information sur l'auteur non disponible"}
+            </p>
+
+          </div>
         </div>
       </div>
       <div className=" flex items-center m-auto gap-4 w-1/2 py-5">
         <p>
-          Prix :
           {selectedProduct
             ? selectedProduct.prix
-            : "quantité du produit non trouvé"}
+            : "quantité du produit non trouvé"}€
         </p>
         <button className="py-1 rounded px-3 text-black bg-orange-200">
           Ajouter au panier
         </button>
       </div>
 
-      <div className="sm:w-1/2 m-auto border">
+      <div className="sm:w-1/2 m-auto border px-5 py-10">
         <p>
           Introduction de la serie :
-          <p>
-            {selectedProduct
-              ? selectedProduct?.oeuvres?.text
-              : "description du produit non trouvé"}
-          </p>
+        </p>
+        <p className="mt-5">
+          {selectedProduct
+            ? selectedProduct?.oeuvres?.text
+            : "description du produit non trouvé"}
         </p>
       </div>
       <div className="flex justify-center">
