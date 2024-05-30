@@ -223,7 +223,7 @@ const FormLog = () => {
           </form>
           <p className="text-blue-400 font-bold">
             Déja un compte ?
-            <NavLink to="/connexion">
+            <NavLink to="/">
               <strong className="text-red-700">Connectez-vous</strong>
             </NavLink>
           </p>

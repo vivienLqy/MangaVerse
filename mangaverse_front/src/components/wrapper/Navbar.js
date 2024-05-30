@@ -36,7 +36,6 @@ const Navbar = () => {
 
   const logout = () => {
     localStorage.clear();
-    window.location.href = "/connexion";
   };
 
   // console.log(roles);

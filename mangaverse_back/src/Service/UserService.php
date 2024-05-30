@@ -11,7 +11,7 @@ class UserService
 {
     private EntityManagerInterface $em;
     private UserPasswordHasherInterface $hasher;
-    
+
     public function __construct(EntityManagerInterface $em, UserPasswordHasherInterface $hasher)
     {
         $this->em = $em;
@@ -25,12 +25,12 @@ class UserService
 
         $newUser = new User();
         $newUser->setEmail($email)
-            ->setRoles([])
+            ->setRoles(["ROLE_USER"])
             ->setPassword($this->hasher->hashPassword($newUser, $password));
 
         $this->em->persist($newUser);
         $this->em->flush();
-        
+
         return $newUser;
     }
 
